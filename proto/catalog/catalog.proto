@@ -49,9 +49,9 @@ message Item {
   int32 id = 1 [json_name="id"];
   string name = 2 [json_name="product_name"];
   int32 price = 3 [json_name="price"];
-  string description = 4 [json_name="type"];
+  string type = 4 [json_name="type"];
   int32 quantity = 5 [json_name="quantity"];
-  string imageUrl = 6 [json_name="photo_url"];
+  string photo_url = 6 [json_name="photo_url"];
 }
 
 
