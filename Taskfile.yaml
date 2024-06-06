@@ -1,9 +1,17 @@
-  version: "3"
+version: "3"
 
-  tasks:
-    generate:
-      aliases:
-        - gen
-      desc: "Generate the contract artifacts"
-      cmds:
-        - protoc -I proto proto/auth/*.proto --go_out=./gen/go --go_opt=paths=source_relative --go-grpc_out=./gen/go --go-grpc_opt=paths=source_relative
+
+tasks:
+  generate:
+    aliases:
+      - gen
+    cmds:
+      - protoc -I proto proto/*/*.proto -I ./third_party/googleapis
+        --go_out=./gen/go/ --go_opt=paths=source_relative
+        --go-grpc_out=./gen/go --go-grpc_opt=paths=source_relative
+        --grpc-gateway_out=./gen/go/ --grpc-gateway_opt=paths=source_relative,generate_unbound_methods=true
+  download-all:
+    cmds:
+      - go get github.com/grpc-ecosystem/grpc-gateway/v2
+      - go get google.golang.org/genproto/googleapis/api/annotations
+      - go get google.golang.org/protobuf/reflect/protoreflect
