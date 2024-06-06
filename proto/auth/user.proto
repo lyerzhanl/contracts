@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "github.com/lyerzhanl/contracts/gen/go/auth;auth";
+
+service UserService {
+  rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse) {}
+  rpc GetUserInfoById (GetUserInfoByIdRequest) returns (GetUserInfoByIdResponse) {}
+}
+
+message User {
+  int32 id = 1 [json_name="id"];
+  string username = 2 [json_name="username"];
+  string email = 3 [json_name="email"];
+  string role = 4 [json_name="role"];
+}
+
+message GetUserInfoRequest {
+  string token = 1 [json_name="token"];
+}
+
+message GetUserInfoResponse {
+  User user = 1 [json_name="user"];
+}
+
+message GetUserInfoByIdRequest {
+  int32 id = 1 [json_name="id"];
+}
+
+message GetUserInfoByIdResponse {
+  User user = 1 [json_name="user"];
+}
