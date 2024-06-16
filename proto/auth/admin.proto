@@ -2,9 +2,6 @@ syntax = "proto3";
 
 package auth;
 
-// Import the google/protobuf package to use the FieldMask type which provides
-// a compact way to specify a set of fields that should be updated in an API call.
-import "google/protobuf/field_mask.proto";
 // Annotations for specifying HTTP configuration.
 import "google/api/annotations.proto";
 
@@ -28,20 +25,19 @@ service AdminService {
 
 // DELETE
 message DeleteUserRequest {
-  int32 id = 1 [json_name="id"];
+  int32 id = 1;
 }
 
 message DeleteUserResponse {
-  bool isDeleted = 1 [json_name="isDeleted"];
+  bool isDeleted = 1;
 }
 
 // UPDATE
 // We will use updateMask to specify which fields should be updated in the EditUserRequest.
 message EditUserRequest {
   User user = 1;
-  google.protobuf.FieldMask updateMask = 2 [json_name="update-mask"];
 }
 
 message EditUserResponse {
-  bool isEdited = 1 [json_name="isEdited"];
+  bool isEdited = 1;
 }

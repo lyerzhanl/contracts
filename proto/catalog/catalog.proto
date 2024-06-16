@@ -5,9 +5,6 @@ package catalogue;
 option go_package = "github.com/lyerzhanl/contracts/gen/go/catalog;catalog";
 
 import "google/api/annotations.proto";
-// Import the google/protobuf package to use the FieldMask type which provides
-// a compact way to specify a set of fields that should be updated in an API call.
-import "google/protobuf/field_mask.proto";
 
 service CatalogueService {
   rpc CreateItem(CreateItemRequest) returns (CreateItemResponse) {
@@ -69,7 +66,6 @@ message GetItemResponse {
 // UPDATE
 message UpdateItemRequest {
   Item item = 1;
-  google.protobuf.FieldMask update_mask = 2;
 }
 
 message UpdateItemResponse {
