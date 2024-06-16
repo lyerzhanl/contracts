@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package auth;
+
+// Import the google/protobuf package to use the FieldMask type which provides
+// a compact way to specify a set of fields that should be updated in an API call.
+import "google/protobuf/field_mask.proto";
+// Annotations for specifying HTTP configuration.
+import "google/api/annotations.proto";
+
+option go_package = "github.com/lyerzhanl/contracts/gen/go/auth;auth";
+
+service AdminService {
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+    option (google.api.http) = {
+      delete: "/v1/users/{id}"
+    };
+  };
+  rpc EditUser(EditUserRequest) returns (EditUserResponse) {
+    option (google.api.http) = {
+      patch: "/v1/users/{user.id}"
+      body: "user"
+    };
+  };
+}
+
+// DELETE
+message DeleteUserRequest {
+  int32 id = 1 [json_name="id"];
+}
+
+message DeleteUserResponse {
+  bool isDeleted = 1 [json_name="isDeleted"];
+}
+
+// UPDATE
+// We will use updateMask to specify which fields should be updated in the EditUserRequest.
+message EditUserRequest {
+  User user = 1;
+  google.protobuf.FieldMask updateMask = 2 [json_name="update-mask"];
+}
+
+message EditUserResponse {
+  bool isEdited = 1 [json_name="isEdited"];
+}
+
+// USER MODEL
+message User {
+  int32 id = 1 [json_name="id"];
+  string username = 2 [json_name="username"];
+  string email = 3 [json_name="email"];
+  string role = 4 [json_name="role"];
+}

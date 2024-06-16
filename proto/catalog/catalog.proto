@@ -3,7 +3,11 @@ syntax = "proto3";
 package catalogue;
 
 option go_package = "github.com/lyerzhanl/contracts/gen/go/catalog;catalog";
+
 import "google/api/annotations.proto";
+// Import the google/protobuf package to use the FieldMask type which provides
+// a compact way to specify a set of fields that should be updated in an API call.
+import "google/protobuf/field_mask.proto";
 
 service CatalogueService {
   rpc CreateItem(CreateItemRequest) returns (CreateItemResponse) {
@@ -12,18 +16,42 @@ service CatalogueService {
       body: "*"
     };
   };
+
   rpc ListItems(ListItemsRequest) returns (ListItemsResponse) {
     option(google.api.http) = {
       get: "/v1/products"
     };
   };
+
   rpc GetItem(GetItemRequest) returns (GetItemResponse) {
     option(google.api.http) = {
       get: "/v1/products/{id}"
     };
   };
+
+  rpc DeleteItem(DeleteItemRequest) returns (DeleteItemResponse) {
+    option(google.api.http) = {
+      delete: "/v1/products/{id}"
+    };
+  };
+
+  rpc UpdateItem(UpdateItemRequest) returns (UpdateItemResponse) {
+    option(google.api.http) = {
+      put: "/v1/products/{id}"
+      body: "*"
+    };
+  };
 }
 
+// CREATE
+message CreateItemRequest {
+  Item item = 1;
+}
+message CreateItemResponse {
+  Item item = 1;
+}
+
+// READ
 message ListItemsRequest {}
 
 message ListItemsResponse {
@@ -38,13 +66,26 @@ message GetItemResponse {
   Item item = 1;
 }
 
-message CreateItemRequest {
+// UPDATE
+message UpdateItemRequest {
   Item item = 1;
+
 }
-message CreateItemResponse {
+
+message UpdateItemResponse {
   Item item = 1;
 }
 
+// DELETE
+message DeleteItemRequest {
+  int32 id = 1;
+}
+
+message DeleteItemResponse {
+  bool isDeleted = 1;
+}
+
+// ITEM MODEL
 message Item {
   int32 id = 1 [json_name="id"];
   string name = 2 [json_name="product_name"];
@@ -52,13 +93,4 @@ message Item {
   string type = 4 [json_name="type"];
   int32 quantity = 5 [json_name="quantity"];
   string photo_url = 6 [json_name="photo_url"];
-}
-
-
-message DeleteItemRequest {
-  int32 id = 1;
-}
-
-message DeleteItemResponse {
-  bool isDeleted = 1;
 }
