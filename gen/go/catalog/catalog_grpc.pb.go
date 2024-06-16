@@ -25,6 +25,8 @@ type CatalogueServiceClient interface {
 	CreateItem(ctx context.Context, in *CreateItemRequest, opts ...grpc.CallOption) (*CreateItemResponse, error)
 	ListItems(ctx context.Context, in *ListItemsRequest, opts ...grpc.CallOption) (*ListItemsResponse, error)
 	GetItem(ctx context.Context, in *GetItemRequest, opts ...grpc.CallOption) (*GetItemResponse, error)
+	DeleteItem(ctx context.Context, in *DeleteItemRequest, opts ...grpc.CallOption) (*DeleteItemResponse, error)
+	UpdateItem(ctx context.Context, in *UpdateItemRequest, opts ...grpc.CallOption) (*UpdateItemResponse, error)
 }
 
 type catalogueServiceClient struct {
@@ -62,6 +64,24 @@ func (c *catalogueServiceClient) GetItem(ctx context.Context, in *GetItemRequest
 	return out, nil
 }
 
+func (c *catalogueServiceClient) DeleteItem(ctx context.Context, in *DeleteItemRequest, opts ...grpc.CallOption) (*DeleteItemResponse, error) {
+	out := new(DeleteItemResponse)
+	err := c.cc.Invoke(ctx, "/catalogue.CatalogueService/DeleteItem", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catalogueServiceClient) UpdateItem(ctx context.Context, in *UpdateItemRequest, opts ...grpc.CallOption) (*UpdateItemResponse, error) {
+	out := new(UpdateItemResponse)
+	err := c.cc.Invoke(ctx, "/catalogue.CatalogueService/UpdateItem", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CatalogueServiceServer is the server API for CatalogueService service.
 // All implementations must embed UnimplementedCatalogueServiceServer
 // for forward compatibility
@@ -69,6 +89,8 @@ type CatalogueServiceServer interface {
 	CreateItem(context.Context, *CreateItemRequest) (*CreateItemResponse, error)
 	ListItems(context.Context, *ListItemsRequest) (*ListItemsResponse, error)
 	GetItem(context.Context, *GetItemRequest) (*GetItemResponse, error)
+	DeleteItem(context.Context, *DeleteItemRequest) (*DeleteItemResponse, error)
+	UpdateItem(context.Context, *UpdateItemRequest) (*UpdateItemResponse, error)
 	mustEmbedUnimplementedCatalogueServiceServer()
 }
 
@@ -84,6 +106,12 @@ func (UnimplementedCatalogueServiceServer) ListItems(context.Context, *ListItems
 }
 func (UnimplementedCatalogueServiceServer) GetItem(context.Context, *GetItemRequest) (*GetItemResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetItem not implemented")
+}
+func (UnimplementedCatalogueServiceServer) DeleteItem(context.Context, *DeleteItemRequest) (*DeleteItemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteItem not implemented")
+}
+func (UnimplementedCatalogueServiceServer) UpdateItem(context.Context, *UpdateItemRequest) (*UpdateItemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateItem not implemented")
 }
 func (UnimplementedCatalogueServiceServer) mustEmbedUnimplementedCatalogueServiceServer() {}
 
@@ -152,6 +180,42 @@ func _CatalogueService_GetItem_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CatalogueService_DeleteItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatalogueServiceServer).DeleteItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/catalogue.CatalogueService/DeleteItem",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatalogueServiceServer).DeleteItem(ctx, req.(*DeleteItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatalogueService_UpdateItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatalogueServiceServer).UpdateItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/catalogue.CatalogueService/UpdateItem",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatalogueServiceServer).UpdateItem(ctx, req.(*UpdateItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CatalogueService_ServiceDesc is the grpc.ServiceDesc for CatalogueService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -170,6 +234,14 @@ var CatalogueService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetItem",
 			Handler:    _CatalogueService_GetItem_Handler,
+		},
+		{
+			MethodName: "DeleteItem",
+			Handler:    _CatalogueService_DeleteItem_Handler,
+		},
+		{
+			MethodName: "UpdateItem",
+			Handler:    _CatalogueService_UpdateItem_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

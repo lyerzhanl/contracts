@@ -8,6 +8,8 @@ import "google/protobuf/field_mask.proto";
 // Annotations for specifying HTTP configuration.
 import "google/api/annotations.proto";
 
+import "auth/user.proto";
+
 option go_package = "github.com/lyerzhanl/contracts/gen/go/auth;auth";
 
 service AdminService {
@@ -42,12 +44,4 @@ message EditUserRequest {
 
 message EditUserResponse {
   bool isEdited = 1 [json_name="isEdited"];
-}
-
-// USER MODEL
-message User {
-  int32 id = 1 [json_name="id"];
-  string username = 2 [json_name="username"];
-  string email = 3 [json_name="email"];
-  string role = 4 [json_name="role"];
 }

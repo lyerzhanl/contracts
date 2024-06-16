@@ -37,8 +37,8 @@ service CatalogueService {
 
   rpc UpdateItem(UpdateItemRequest) returns (UpdateItemResponse) {
     option(google.api.http) = {
-      put: "/v1/products/{id}"
-      body: "*"
+      patch: "/v1/products/{item.id}"
+      body: "item"
     };
   };
 }
@@ -69,7 +69,7 @@ message GetItemResponse {
 // UPDATE
 message UpdateItemRequest {
   Item item = 1;
-
+  google.protobuf.FieldMask update_mask = 2;
 }
 
 message UpdateItemResponse {
