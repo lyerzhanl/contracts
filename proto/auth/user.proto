@@ -11,9 +11,8 @@ service UserService {
 
 message User {
   int32 id = 1 [json_name="id"];
-  string username = 2 [json_name="username"];
   string email = 3 [json_name="email"];
-  string role = 4 [json_name="role"];
+  string password = 4 [json_name="password"];
 }
 
 message GetUserInfoRequest {

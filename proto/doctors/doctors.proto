@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package doctors;
+
+
+option go_package = "github.com/lyerzhanl/contracts/gen/go/doctors;doctors";
+
+
+import "google/api/annotations.proto";
+
+
+service Doctors {
+  rpc CreateDoctor(CreateDoctorRequest) returns (CreateDoctorResponse) {
+    option (google.api.http) = {
+      post: "/v1/doctors"
+      body: "*"
+    };
+  }
+
+  rpc GetDoctors(GetDoctorsRequest) returns (GetDoctorsResponse) {
+    option (google.api.http) = {
+      get: "/v1/doctors"
+    };
+  }
+
+  rpc GetDoctor(GetDoctorRequest) returns (GetDoctorResponse) {
+    option (google.api.http) = {
+      get: "/v1/doctors/{id}"
+    };
+  }
+
+  rpc UpdateDoctor(UpdateDoctorRequest) returns (UpdateDoctorResponse) {
+    option (google.api.http) = {
+      put: "/v1/doctors/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteDoctor(DeleteDoctorRequest) returns (DeleteDoctorResponse) {
+    option (google.api.http) = {
+      delete: "/v1/doctors/{id}"
+    };
+  }
+}
+
+message Doctor {
+  int32 id = 1 [json_name="id"];
+  string Name = 2 [json_name="name"];
+      string Surname = 3 [json_name="surname"];
+    string Position = 4 [json_name="position"];
+    uint32 Age = 5 [json_name="age"];
+  int32 Experience = 6 [json_name="experience"];
+}
+
+message CreateDoctorRequest {
+  Doctor doctor = 1;
+}
+
+message CreateDoctorResponse {
+  Doctor doctor = 1;
+}
+
+message GetDoctorsRequest {}
+
+message GetDoctorsResponse {
+ Doctor doctors = 1;
+}
+
+message GetDoctorRequest {
+  int32 id = 1;
+}
+
+message GetDoctorResponse {
+  Doctor doctor = 1;
+}
+
+message UpdateDoctorRequest {
+  int32 id = 1;
+  Doctor doctor = 2;
+}
+
+message UpdateDoctorResponse {
+  Doctor doctor = 1;
+}
+
+message DeleteDoctorRequest {
+  int32 id = 1;
+}
+
+message DeleteDoctorResponse {
+  Doctor doctor = 1;
+}
